@@ -12,8 +12,12 @@ import org.springframework.stereotype.Service;
 import com.ecommerce.Dto.CartDto;
 import com.ecommerce.Dto.CartItemsDto;
 import com.ecommerce.Dto.CartListDto;
+import com.ecommerce.Dto.CartUserDto;
 import com.ecommerce.Dto.FinalCartDto;
+import com.ecommerce.Exception.CartNotFoundException;
+import com.ecommerce.Exception.ProductNotFoundException;
 import com.ecommerce.Exception.ResourceNotFoundException;
+import com.ecommerce.Exception.UserNotFoundException;
 import com.ecommerce.model.Cart;
 import com.ecommerce.model.CartList;
 import com.ecommerce.model.MyUser;
@@ -37,13 +41,13 @@ public class CartServiceImpl implements CartService {
 	CartRepo cartRepo;
 
 	@Override
-	public CartDto createCart(CartDto cartdto, int userId, int productId) {
+	public void createCart(CartUserDto cartdto, int userId, int productId) {
 		MyUser user = userRepo.findById(userId)
-				.orElseThrow(() -> new ResourceNotFoundException("User is not exist with id:" + userId));
+				.orElseThrow(() -> new UserNotFoundException("User is not exist with id:" + userId));
 		Product product = productRepo.findById(productId)
-				.orElseThrow(() -> new ResourceNotFoundException("User is not exist with id:" + productId));
+				.orElseThrow(() -> new ProductNotFoundException("User is not exist with id:" + productId));
 
-		Cart cart = CartModelMapper.dtoToEntity(cartdto);
+		Cart cart = new Cart();
 		cart.setProduct(product);
 		cart.setPrice(product.getPrice());
 		cart.setQuantity(cartdto.getQuantity());
@@ -51,13 +55,13 @@ public class CartServiceImpl implements CartService {
 		cart.setUser(user);
 		cartRepo.save(cart);
 
-		return CartModelMapper.entityToDto(cart);
+		
 	}
 
 	@Override
 	public CartDto updateCart(CartDto cartDto, int cartId) {
 		Cart cart = cartRepo.findById(cartId)
-				.orElseThrow(() -> new ResourceNotFoundException("item is not exist with id:" + cartId));
+				.orElseThrow(() -> new CartNotFoundException("item is not exist with id:" + cartId));
 
 		cart.setQuantity(cartDto.getQuantity());
 		cart.setSubTotal(cart.getPrice() * cartDto.getQuantity());
@@ -69,7 +73,7 @@ public class CartServiceImpl implements CartService {
 	@Override
 	public void deleteCart(int cartId) {
 		Cart cart = cartRepo.findById(cartId)
-				.orElseThrow(() -> new ResourceNotFoundException("item is not exist with id:" + cartId));
+				.orElseThrow(() -> new CartNotFoundException("item is not exist with id:" + cartId));
 
 		cartRepo.deleteById(cartId);
 	}
@@ -77,7 +81,7 @@ public class CartServiceImpl implements CartService {
 	@Override
 	public List<CartDto> getCartByUser(int userId) {
 		MyUser user = userRepo.findById(userId)
-				.orElseThrow(() -> new ResourceNotFoundException("User is not exist with id:" + userId));
+				.orElseThrow(() -> new UserNotFoundException("User is not exist with id:" + userId));
 		List<Cart> carts = cartRepo.findCartByUser(user);
 		List<CartDto> cartDto = carts.stream().map((cart) -> CartModelMapper.entityToDto(cart))
 				.collect(Collectors.toList());
@@ -89,7 +93,7 @@ public class CartServiceImpl implements CartService {
 	public FinalCartDto getFinalCartByUser(int userId) {
 		long total = 0;
 		MyUser user = userRepo.findById(userId)
-				.orElseThrow(() -> new ResourceNotFoundException("User is not exist with id:" + userId));
+				.orElseThrow(() -> new UserNotFoundException("User is not exist with id:" + userId));
 		List<Cart> CartList = cartRepo.findCartByUser(user);
 
 		List<CartItemsDto> cartItems = new ArrayList<>();

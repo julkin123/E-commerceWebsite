@@ -3,11 +3,12 @@ package com.ecommerce.service;
 import java.util.List;
 
 import com.ecommerce.Dto.CartDto;
+import com.ecommerce.Dto.CartUserDto;
 import com.ecommerce.Dto.FinalCartDto;
 
 public interface CartService {
 	// item added to cart
-	CartDto createCart(CartDto cartdto, int userId, int productId);
+	void createCart(CartUserDto cartdto, int userId, int productId);
 
 	// item update
 	CartDto updateCart(CartDto cartDto, int cartId);

@@ -6,7 +6,7 @@ import com.ecommerce.model.Product;
 public class CartDto {
 	private int cartId;
 	private double price;
-	private long quantity;
+	private double quantity;
 
 	private double subTotal;
 
@@ -30,11 +30,11 @@ public class CartDto {
 		this.price = price;
 	}
 
-	public long getQuantity() {
+	public double getQuantity() {
 		return quantity;
 	}
 
-	public void setQuantity(long quantity) {
+	public void setQuantity(double quantity) {
 		this.quantity = quantity;
 	}
 
@@ -62,7 +62,7 @@ public class CartDto {
 		this.product = product;
 	}
 
-	public CartDto(int cartId, double price, long quantity, double subTotal, MyUser user, Product product) {
+	public CartDto(int cartId, double price, double quantity, double subTotal, MyUser user, Product product) {
 		super();
 		this.cartId = cartId;
 		this.price = price;

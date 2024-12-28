@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ecommerce.Dto.ReviewDto;
-
+import com.ecommerce.Dto.ReviewUserDto;
 import com.ecommerce.service.ReviewService;
 
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,22 +25,22 @@ public class ReviewController {
 	@Autowired
 	ReviewService reviewService;
 
-	@PostMapping("user/{userId}/product/{productId}/review")
-	public ResponseEntity<ReviewDto> createReview(@RequestBody ReviewDto reviewDto, @PathVariable int userId,
+	@PostMapping("/user/{userId}/product/{productId}/review")
+	public ResponseEntity<ReviewUserDto> createReview(@RequestBody ReviewUserDto reviewDto, @PathVariable int userId,
 			@PathVariable int productId) {
 
-		return new ResponseEntity<ReviewDto>(reviewService.createReview(reviewDto, userId, productId),
+		return new ResponseEntity<ReviewUserDto>(reviewService.createReview(reviewDto, userId, productId),
 				HttpStatus.CREATED);
 
 	}
 
-	@PutMapping("user/product/review/{reviewId}")
+	@PutMapping("/user/product/review/{reviewId}")
 	public ResponseEntity<ReviewDto> updateReview(@RequestBody ReviewDto reviewDto, @PathVariable int reviewId) {
 
 		return new ResponseEntity<ReviewDto>(reviewService.updateReview(reviewDto, reviewId), HttpStatus.OK);
 	}
 
-	@DeleteMapping("user/product/review/{reviewId}")
+	@DeleteMapping("/user/product/review/{reviewId}")
 	public ResponseEntity<String> deleteReview(@PathVariable int reviewId) {
 
 		reviewService.deleteReview(reviewId);
@@ -49,7 +49,7 @@ public class ReviewController {
 
 	}
 
-	@GetMapping("user/product/{productId}/review")
+	@GetMapping("/user/product/{productId}/review")
 	public ResponseEntity<List<ReviewDto>> getAllReviewByProduct(@PathVariable int productId) {
 		return new ResponseEntity<List<ReviewDto>>(reviewService.getallReviewByProdct(productId), HttpStatus.OK);
 	}

@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ecommerce.Dto.CartDto;
+import com.ecommerce.Dto.CartUserDto;
 import com.ecommerce.Dto.FinalCartDto;
 import com.ecommerce.service.CartService;
 
@@ -25,10 +26,12 @@ public class CartController {
 	CartService cartService;
 
 	@PostMapping("/user/{userId}/product/{productId}/cart")
-	public ResponseEntity<CartDto> createCart(@RequestBody CartDto cartdto, @PathVariable int userId,
+	public ResponseEntity<String> createCart(@RequestBody CartUserDto cartdto, @PathVariable int userId,
 			@PathVariable int productId) {
+		
+		cartService.createCart(cartdto, userId, productId);
 
-		return new ResponseEntity<CartDto>(cartService.createCart(cartdto, userId, productId), HttpStatus.CREATED);
+		return new ResponseEntity<String>("item added", HttpStatus.CREATED);
 	}
 
 	@PutMapping("/user/cart/{cartId}")

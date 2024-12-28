@@ -10,7 +10,10 @@ import org.springframework.stereotype.Service;
 
 import com.ecommerce.Dto.ProductDto;
 import com.ecommerce.Dto.ProductPostDto;
+import com.ecommerce.Exception.CategoryNotFoundException;
+import com.ecommerce.Exception.ProductNotFoundException;
 import com.ecommerce.Exception.ResourceNotFoundException;
+import com.ecommerce.Exception.UserNotFoundException;
 import com.ecommerce.model.Category;
 import com.ecommerce.model.MyUser;
 import com.ecommerce.model.Product;
@@ -34,9 +37,9 @@ public class ProductServiceImpl implements ProductService {
 	public ProductPostDto createProduct(ProductPostDto productDto, int categoryId, int userId) {
 
 		MyUser user = userRepo.findById(userId)
-				.orElseThrow(() -> new ResourceNotFoundException("User not exist with given Id:" + userId));
+				.orElseThrow(() -> new UserNotFoundException("User not exist with given Id:" + userId));
 		Category category = categoryRepo.findById(categoryId)
-				.orElseThrow(() -> new ResourceNotFoundException("Category is not exist with given id:" + categoryId));
+				.orElseThrow(() -> new CategoryNotFoundException("Category is not exist with given id:" + categoryId));
 
 		Product product = new Product();
 
@@ -69,7 +72,7 @@ public class ProductServiceImpl implements ProductService {
 	@Override
 	public ProductDto updateProduct(ProductDto productDto, int productId) {
 		Product product = productRepo.findById(productId)
-				.orElseThrow(() -> new ResourceNotFoundException("product is not Exist with id:" + productId));
+				.orElseThrow(() -> new ProductNotFoundException("product is not Exist with id:" + productId));
 		product.setProductName(productDto.getProductName());
 		product.setDescription(productDto.getDescription());
 		product.setImageName(productDto.getImageName());
@@ -93,7 +96,7 @@ public class ProductServiceImpl implements ProductService {
 	@Override
 	public ProductDto getProductById(int productId) {
 		Product product = productRepo.findById(productId)
-				.orElseThrow(() -> new ResourceNotFoundException("product is not Exist with id:" + productId));
+				.orElseThrow(() -> new ProductNotFoundException("product is not Exist with id:" + productId));
 		ProductDto productDto = ProductModelMapper.entityToDto(product);
 		return productDto;
 	}
@@ -101,7 +104,7 @@ public class ProductServiceImpl implements ProductService {
 	@Override
 	public List<ProductDto> getAllProductByCategory(int categoryId) {
 		Category category = categoryRepo.findById(categoryId)
-				.orElseThrow(() -> new ResourceNotFoundException("category is not exist with Id:" + categoryId));
+				.orElseThrow(() -> new CategoryNotFoundException("category is not exist with Id:" + categoryId));
 
 		List<Product> products = productRepo.findByCategory(category);
 		List<ProductDto> productDto = products.stream().map((product) -> ProductModelMapper.entityToDto(product))
@@ -113,7 +116,7 @@ public class ProductServiceImpl implements ProductService {
 	@Override
 	public void deleteProduct(int productId) {
 		Product product = productRepo.findById(productId)
-				.orElseThrow(() -> new ResourceNotFoundException("product is not exist with Id:" + productId));
+				.orElseThrow(() -> new ProductNotFoundException("product is not exist with Id:" + productId));
 		productRepo.delete(product);
 
 	}

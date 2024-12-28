@@ -21,7 +21,7 @@ public class Cart {
 	@Column(name = "cart_id")
 	private int cartId;
 	private double price;
-	private long quantity;
+	private double quantity;
 	@Column(name = "sub_total")
 	private double subTotal;
 	@ManyToOne
@@ -45,11 +45,11 @@ public class Cart {
 		this.price = price;
 	}
 
-	public long getQuantity() {
+	public double getQuantity() {
 		return quantity;
 	}
 
-	public void setQuantity(long quantity) {
+	public void setQuantity(double quantity) {
 		this.quantity = quantity;
 	}
 
@@ -77,7 +77,7 @@ public class Cart {
 		this.product = product;
 	}
 
-	public Cart(int cartId, double price, long quantity, double subTotal, MyUser user, Product product) {
+	public Cart(int cartId, double price, double quantity, double subTotal, MyUser user, Product product) {
 		super();
 		this.cartId = cartId;
 		this.price = price;

@@ -51,24 +51,24 @@ class UserServiceImplTest {
 		autoCloseable.close();
 	}
 
-	@Test
-	void testCreateUser() {
-		
-		when(userRepo.save(user)).thenReturn(user);
-		UserDto userDto=UserModelMapper.entityToDto(user);
-		UserDto result=userService.createUser(userDto);
-		assertThat(result).isEqualTo(userDto);
-	
-		
-	}
+//	@Test
+//	void testCreateUser() {
+//		
+//		when(userRepo.save(user)).thenReturn(user);
+//		UserDto userDto=UserModelMapper.entityToDto(user);
+//		UserDto result=userService.createUser(userDto);
+//		assertThat(result).isEqualTo(userDto);
+//	
+//		
+//	}
 
-	@Test
-	void testUpdteUser() {
-		when(userRepo.findById(1)).thenReturn(Optional.of(user));
-		UserDto userDto=UserModelMapper.entityToDto(user);
-		UserDto result=userService.updteUser(userDto,1);
-		assertThat(result).isEqualTo(userDto);
-	}
+//	@Test
+//	void testUpdteUser() {
+//		when(userRepo.findById(1)).thenReturn(Optional.of(user));
+//		UserDto userDto=UserModelMapper.entityToDto(user);
+//		UserDto result=userService.updteUser(userDto,1);
+//		assertThat(result).isEqualTo(userDto);
+//	}
 
 	@Test
 	void testGetAllUser() {

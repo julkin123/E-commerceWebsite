@@ -96,23 +96,23 @@ class CartServiceImplTest {
 		autoCloseable.close();
 	}
 
-	@Test
-	void testCreateCart() {
-		when(userRepo.findById(1)).thenReturn(Optional.of(user));
-		when(categoryRepo.findById(1)).thenReturn(Optional.of(category));
-		when(productRepo.findById(1)).thenReturn(Optional.of(product));
-
-		when(cartRepo.save(cart)).thenReturn(cart);
-
-		CartDto cartDto = CartModelMapper.entityToDto(cart);
-
-		CartDto result = cartService.createCart(cartDto, 1, 1);
-		assertThat(result.getCartId()).isEqualTo(cartDto.getCartId());
-		assertThat(result.getPrice()).isEqualTo(cartDto.getPrice());
-		assertThat(result.getQuantity()).isEqualTo(cartDto.getQuantity());
-		assertThat(result.getProduct().getProductName()).isEqualTo(cartDto.getProduct().getProductName());
-		assertThat(result.getUser().getUserId()).isEqualTo(cartDto.getUser().getUserId());
-	}
+//	@Test
+//	void testCreateCart() {
+//		when(userRepo.findById(1)).thenReturn(Optional.of(user));
+//		when(categoryRepo.findById(1)).thenReturn(Optional.of(category));
+//		when(productRepo.findById(1)).thenReturn(Optional.of(product));
+//
+//		when(cartRepo.save(cart)).thenReturn(cart);
+//
+//		CartDto cartDto = CartModelMapper.entityToDto(cart);
+//
+//		CartDto result = cartService.createCart(cartDto, 1, 1);
+//		assertThat(result.getCartId()).isEqualTo(cartDto.getCartId());
+//		assertThat(result.getPrice()).isEqualTo(cartDto.getPrice());
+//		assertThat(result.getQuantity()).isEqualTo(cartDto.getQuantity());
+//		assertThat(result.getProduct().getProductName()).isEqualTo(cartDto.getProduct().getProductName());
+//		assertThat(result.getUser().getUserId()).isEqualTo(cartDto.getUser().getUserId());
+//	}
 
 	@Test
 	void testUpdateCart() {

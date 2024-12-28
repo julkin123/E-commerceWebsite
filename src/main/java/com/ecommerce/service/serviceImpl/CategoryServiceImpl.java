@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.ResourceAccessException;
 
 import com.ecommerce.Dto.CategoryDto;
+import com.ecommerce.Exception.CategoryNotFoundException;
 import com.ecommerce.Exception.ResourceNotFoundException;
 import com.ecommerce.model.Category;
 import com.ecommerce.modelMapper.CategoryModelMapper;
@@ -38,21 +39,21 @@ public class CategoryServiceImpl implements CategoryService {
 	@Override
 	public CategoryDto getCategoryById(int categoryId) {
 		Category category = categoryRepo.findById(categoryId)
-				.orElseThrow(() -> new ResourceNotFoundException("Category not Exist with id:" + categoryId));
+				.orElseThrow(() -> new CategoryNotFoundException("Category not Exist with id:" + categoryId));
 		return CategoryModelMapper.entityToDto(category);
 	}
 
 	@Override
 	public void deleteCategory(int categoryId) {
 		Category category = categoryRepo.findById(categoryId)
-				.orElseThrow(() -> new ResourceAccessException("Category not Exist with id:" + categoryId));
+				.orElseThrow(() -> new CategoryNotFoundException("Category not Exist with id:" + categoryId));
 		categoryRepo.deleteById(category.getCategoryId());
 	}
 
 	@Override
 	public CategoryDto updaetCategory(CategoryDto categoryDto, int categoryId) {
 		Category category = categoryRepo.findById(categoryId)
-				.orElseThrow(() -> new ResourceAccessException("category is not exist with id:" + categoryId));
+				.orElseThrow(() -> new CategoryNotFoundException("category is not exist with id:" + categoryId));
 		category.setCategoryName(categoryDto.getCategoryName());
 
 		categoryRepo.save(category);

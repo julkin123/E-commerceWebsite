@@ -9,7 +9,9 @@ import org.springframework.stereotype.Service;
 
 import com.ecommerce.Dto.ProductDto;
 import com.ecommerce.Dto.WatchListDto;
+import com.ecommerce.Exception.ProductNotFoundException;
 import com.ecommerce.Exception.ResourceNotFoundException;
+import com.ecommerce.Exception.UserNotFoundException;
 import com.ecommerce.model.Product;
 import com.ecommerce.model.MyUser;
 import com.ecommerce.model.WatchList;
@@ -31,9 +33,9 @@ public class WatchListServiceImpl implements WatchListService {
 	@Override
 	public WatchListDto createWatchList(int userId, int productId) {
 		MyUser user = userRepo.findById(userId)
-				.orElseThrow(() -> new ResourceNotFoundException("user is not exisit with id:" + userId));
+				.orElseThrow(() -> new UserNotFoundException("user is not exisit with id:" + userId));
 		Product product = productRepo.findById(productId)
-				.orElseThrow(() -> new ResourceNotFoundException("product is not exisit with id:" + productId));
+				.orElseThrow(() -> new ProductNotFoundException("product is not exisit with id:" + productId));
 		WatchList watchList = new WatchList(0, product, user);
 		watchList.setProduct(product);
 		watchList.setUser(user);
@@ -54,7 +56,7 @@ public class WatchListServiceImpl implements WatchListService {
 	@Override
 	public List<WatchListDto> getWatchListByUser(int userId) {
 		MyUser user = userRepo.findById(userId)
-				.orElseThrow(() -> new ResourceNotFoundException("user is not exisit with id:" + userId));
+				.orElseThrow(() -> new UserNotFoundException("user is not exisit with id:" + userId));
 		List<WatchList> watchLists = watchListRepo.getWatchListByUser(user);
 		List<WatchListDto> watchListDto = watchLists.stream()
 				.map((watchList) -> WatchListModelMapper.entityToDto(watchList)).collect(Collectors.toList());
